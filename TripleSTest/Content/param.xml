@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<params>
+
+  <parSection name="tilesets">
+    
+    <entry id="0">
+      <prop name="location" type="string">testSet</prop>
+    </entry>
+    
+  </parSection>
+  <parSection name="script">
+    
+    <entry id="0">
+      <prop name="location" type="string">m0</prop>
+    </entry>
+
+  </parSection>
+  <parSection name="level">
+
+    <entry id="0">
+      <prop name="script" type="int">0</prop>
+      <prop name="name" type="string">Engine Debug</prop>
+      <prop name="file" type="string">debug</prop>
+    </entry>
+    <entry id="10">
+      <prop name="script" type="int">0</prop>
+      <prop name="name" type="string">Engine Debug 2</prop>
+      <prop name="file" type="string">testerMap</prop>
+    </entry>
+
+  </parSection>
+  
+</params>

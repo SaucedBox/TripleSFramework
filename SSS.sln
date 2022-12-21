@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TripleS", "TripleS\TripleS.csproj", "{15DAD2B8-5556-44FE-8B56-E7F2E5B832C3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TripleSTest", "TripleSTest\TripleSTest.csproj", "{ACD30CE7-86A0-42D2-85FE-49DF388096E8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{15DAD2B8-5556-44FE-8B56-E7F2E5B832C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15DAD2B8-5556-44FE-8B56-E7F2E5B832C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15DAD2B8-5556-44FE-8B56-E7F2E5B832C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15DAD2B8-5556-44FE-8B56-E7F2E5B832C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACD30CE7-86A0-42D2-85FE-49DF388096E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACD30CE7-86A0-42D2-85FE-49DF388096E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACD30CE7-86A0-42D2-85FE-49DF388096E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACD30CE7-86A0-42D2-85FE-49DF388096E8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {563C7294-34AF-4ED8-AB67-A6E1E19B6BAD}
+	EndGlobalSection
+EndGlobal
