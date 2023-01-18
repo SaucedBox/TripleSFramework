@@ -12,7 +12,7 @@ using TripleS.Animation;
 using System;
 using TripleSTest.Services;
 using TiledCS;
-using System.Linq;
+using System.Diagnostics;
 
 namespace TripleSTest;
 
@@ -23,11 +23,9 @@ public class Game1 : Game, ITripleSGame
     public Renderer _Renderer { get; private set; }
     public LevelHandler _LevelHandler { get; private set; }
 
-    Line test;
-    Rectangle rect;
-    Vector2 rectVel;
-    Vector2 rectPos;
-    Rectangle collider;
+    Collider line;
+    Transform rect;
+    Collider collider;
     Texture2D testTexture;
     Animator animator;
 
@@ -53,11 +51,10 @@ public class Game1 : Game, ITripleSGame
         _LevelHandler.Initialize(0, entTypes);
         _LevelHandler.DrawLevel = false;
 
-        test = new Line(new Vector2(50, 30), new Vector2(70, 40), SlopeInversion.Bottom);
-        rectPos = new Vector2(30, 3);
-        rect = new Rectangle((int)rectPos.X, (int)rectPos.Y, 16, 16);
-        rectVel = new Vector2(1f, 0f);
-        collider = new Rectangle(0, 30, 40, 10);
+        line = new Collider(new Rectangle(50, 30, 20, 10), 0.5f, 1, false);
+        rect = new Transform(new Vector2(30, 3), 16, 16, 4f, true, true);
+        rect.Velocity = new Vector2(1f, 0f);
+        collider = new Collider(new Rectangle(0, 30, 40, 10));
 
         DebugConsole.EnterInput = Keys.Enter;
         DebugConsole.ToggleInput = Keys.OemTilde;
@@ -81,10 +78,10 @@ public class Game1 : Game, ITripleSGame
         _Renderer.View.Zoom = 6;
 
         _Renderer.Lighting.Lights.Add(new LightData(new Vector2(40,5), 1f, 1f, new Vector3(1, 1, 1)));
-        _Renderer.EnableLigthing = false;
+        _Renderer.EnableLigthing = true;
         _Renderer.Load(Content, "effects/lighting");
 
-        Debuger.DebugFont = Content.Load<SpriteFont>("debug");
+        DebugConsole.DebugFont = Content.Load<SpriteFont>("debug");
         DebugConsole.FontSize = 12;
 
         Oragnizer.LoadComps(Content);
@@ -115,11 +112,20 @@ public class Game1 : Game, ITripleSGame
             Oragnizer.UpdateMinimalComps(gameTime);
             _LevelHandler.Update();
 
-            rect.Location = rectPos.ToPoint();
-            rectVel = CollisionEngine.UpdateVelocity(rectVel, 4, (float)gameTime.ElapsedGameTime.TotalSeconds);
-            rectVel = CollisionEngine.CollideRectangle(collider, rect, rectVel);
-            rectVel = CollisionEngine.CollideLine(test, rect, rectVel);
-            rectPos += rectVel;
+            rect.Velocity = CollisionEngine.UpdateVelocity(rect, (float)gameTime.ElapsedGameTime.TotalSeconds);
+
+            if (CollisionEngine.CollideAll(collider, rect, out Vector2 pos, out Vector2 vel))
+            {
+                rect.Velocity = vel;
+                rect.Position = pos;
+            }
+
+            if (CollisionEngine.CollideAll(line, rect, out pos, out vel))
+            {
+                rect.Velocity = vel;
+                rect.Position = pos;
+            }
+            rect.ApplyVelocity();
 
             if (GameInputs.OncePress(Keys.D1))
                 animator.PlayAnimation("first");
@@ -128,7 +134,7 @@ public class Game1 : Game, ITripleSGame
 
             animator.UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
 
-            _Renderer.View.TargetPosition = new Vector2(rectPos.X + rect.Width / 2, rectPos.Y + rect.Height / 2);
+            _Renderer.View.TargetPosition = new Vector2(rect.Position.X + rect.Width / 2, rect.Position.Y + rect.Height / 2);
         }
 
         DebugConsole.Update();
@@ -138,21 +144,20 @@ public class Game1 : Game, ITripleSGame
     {
         if (e.Command == "fps")
         {
-            Debuger.Print(fps);
+            Debug.Print(fps.ToString());
         }
     }
 
     protected override void Draw(GameTime gameTime)
     {
         _Renderer.PhaseOne();
-        _Renderer.BasicDraw(testTexture, collider, 0, 0, col: Color.Blue);
+        _Renderer.BasicDraw(testTexture, collider.GetRectangle(), 0, 0, col: Color.Blue);
         _Renderer.PhaseTwo();
 
         Oragnizer.DrawComps(_Renderer);
         _LevelHandler.StandardDraw(_Renderer);
 
-        _Renderer.BasicDraw(animator.OutputTexture, rect.Location.ToVector2(), 1, 0, source: animator.OutputSource);
-        Debuger.DrawLine(_Renderer, test, testTexture, Color.Red);
+        _Renderer.BasicDraw(animator.OutputTexture, rect.Position, 1, 0, source: animator.OutputSource);
 
         _Renderer.PhaseThree();
 
